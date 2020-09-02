@@ -34,7 +34,7 @@ public class DepartmentController {
         return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).body(departmentAdded);
     }
 
-    @GetMapping("/findAllDepartments")
+    @GetMapping("/getAllDepartments")
     public ResponseEntity<Object> findAllDepartments(){
         List<Department> allDepartments;
 
@@ -44,8 +44,8 @@ public class DepartmentController {
         return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(allDepartments);
     }
 
-    @DeleteMapping("/deleteDepartment")
-    public ResponseEntity<Object> deleteDepartment(@RequestParam int id){
+    @DeleteMapping("/deleteDepartment/{id}")
+    public ResponseEntity<Object> deleteDepartment(@PathVariable int id){
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "deleteDepartment");
         try{
