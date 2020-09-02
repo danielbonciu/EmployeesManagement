@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/employees")
@@ -76,8 +75,8 @@ public class EmployeesController {
         return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(employeeList);
     }
 
-    @GetMapping("/getEmployeesByJob")
-    public ResponseEntity<Object> findEmployeeByJob(@RequestParam int jobid){
+    @GetMapping("/getEmployeesByJob/{jobid}")
+    public ResponseEntity<Object> findEmployeeByJob(@PathVariable int jobid){
         List<Employee> employeeList = new ArrayList<>();
         List<EmployeeDTO> employeeDTOList = new ArrayList<>();
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -92,8 +91,8 @@ public class EmployeesController {
         return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(employeeDTOList);
     }
 
-    @GetMapping("/getEmployeesByDep")
-    public ResponseEntity<Object> findEmployeeByDep(@RequestParam int departmentid){
+    @GetMapping("/getEmployeesByDep/{departmentid}")
+    public ResponseEntity<Object> findEmployeeByDep(@PathVariable int departmentid){
         List<Employee> employeeList = new ArrayList<>();
         List<EmployeeDTO> employeeDTOList = new ArrayList<>();
         HttpHeaders httpHeaders = new HttpHeaders();

@@ -1,7 +1,6 @@
 package com.ausy_technologies.demo.Controller;
 
 import com.ausy_technologies.demo.Error.ErrorResponse;
-import com.ausy_technologies.demo.Model.DAO.Department;
 import com.ausy_technologies.demo.Model.DAO.JobCategory;
 import com.ausy_technologies.demo.Service.JobCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,7 @@ public class JobCategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).body(jobCategoryAdded);
     }
 
-    @GetMapping("/findAllJobCategories")
+    @GetMapping("/getAllJobCategories")
     public ResponseEntity<Object> findAllCategories(){
         List<JobCategory> allJobCategories;
 
@@ -44,8 +43,8 @@ public class JobCategoryController {
         return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(allJobCategories);
     }
 
-    @DeleteMapping("/deleteJobCategory")
-    public ResponseEntity<Object> deleteJobCategory(@RequestParam int id){
+    @DeleteMapping("/deleteJobCategory/{id}")
+    public ResponseEntity<Object> deleteJobCategory(@PathVariable int id){
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "deleteJobCategory");
         try{
