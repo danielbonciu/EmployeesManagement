@@ -21,7 +21,6 @@ public class EmployeesController {
     @Autowired
     private EmployeesService service;
 
-
     @PostMapping("/addEmployee")
     public ResponseEntity<Object> saveEmployee(@RequestBody Employee employee) {
         Employee addedEmployee;
@@ -77,7 +76,7 @@ public class EmployeesController {
 
     @GetMapping("/getEmployeesByJob/{jobid}")
     public ResponseEntity<Object> findEmployeeByJob(@PathVariable int jobid){
-        List<Employee> employeeList = new ArrayList<>();
+        List<Employee> employeeList;
         List<EmployeeDTO> employeeDTOList = new ArrayList<>();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "findEmployeesByJob");
@@ -87,13 +86,13 @@ public class EmployeesController {
             ErrorResponse.LogError(err);
             return ResponseEntity.status(err.getErrorId()).headers(httpHeaders).body(err.getErrorMessage());
         }
-        employeeList.stream().map(e -> EmployeeMapper.convertToEmployeeDto(e)).forEach(employeeDTOList::add);
+        employeeList.stream().map(EmployeeMapper::convertToEmployeeDto).forEach(employeeDTOList::add);
         return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(employeeDTOList);
     }
 
     @GetMapping("/getEmployeesByDep/{departmentid}")
     public ResponseEntity<Object> findEmployeeByDep(@PathVariable int departmentid){
-        List<Employee> employeeList = new ArrayList<>();
+        List<Employee> employeeList;
         List<EmployeeDTO> employeeDTOList = new ArrayList<>();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "findEmployeesByDep");
@@ -103,13 +102,13 @@ public class EmployeesController {
             ErrorResponse.LogError(err);
             return ResponseEntity.status(err.getErrorId()).headers(httpHeaders).body(err.getErrorMessage());
         }
-        employeeList.stream().map(e -> EmployeeMapper.convertToEmployeeDto(e)).forEach(employeeDTOList::add);
+        employeeList.stream().map(EmployeeMapper::convertToEmployeeDto).forEach(employeeDTOList::add);
         return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(employeeDTOList);
     }
 
     @GetMapping("/getEmployeesDTOByDepAndJob/{departmentId}/{jobId}")
     public ResponseEntity<Object> findEmployeeByDep(@PathVariable int departmentId, @PathVariable int jobId){
-        List<Employee> employeeList = new ArrayList<>();
+        List<Employee> employeeList;
         List<EmployeeDTO> employeeDTOList = new ArrayList<>();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "findEmployeesByDep");
@@ -119,7 +118,7 @@ public class EmployeesController {
             ErrorResponse.LogError(err);
             return ResponseEntity.status(err.getErrorId()).headers(httpHeaders).body(err.getErrorMessage());
         }
-        employeeList.stream().map(e -> EmployeeMapper.convertToEmployeeDto(e)).forEach(employeeDTOList::add);
+        employeeList.stream().map(EmployeeMapper::convertToEmployeeDto).forEach(employeeDTOList::add);
         return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(employeeDTOList);
     }
 
@@ -154,7 +153,7 @@ public class EmployeesController {
 
     @GetMapping("/getAllEmployeesDTO")
     public ResponseEntity<Object> findAllEmployeesDTO(){
-        List<Employee> employeeList = null;
+        List<Employee> employeeList;
         List<EmployeeDTO> employeeDTOList = new ArrayList<>();
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -166,13 +165,13 @@ public class EmployeesController {
             ErrorResponse.LogError(e);
             return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(employeeDTOList);
         }
-        employeeList.stream().map(e -> EmployeeMapper.convertToEmployeeDto(e)).forEach(employeeDTOList::add);
+        employeeList.stream().map(EmployeeMapper::convertToEmployeeDto).forEach(employeeDTOList::add);
         return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(employeeDTOList);
     }
 
     @PutMapping("/updateEmployee/{id}")
     public ResponseEntity<Object> updateEmployee(@RequestBody Employee employee,@PathVariable int id){
-        Employee updatedEmployee = null;
+        Employee updatedEmployee;
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "UpdateEmployee");
