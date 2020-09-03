@@ -14,8 +14,18 @@ public class Department {
     private int id;
     private String name;
 
+    public Department() {
+
+    }
+
+    public Department(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     @OneToMany(mappedBy = "department", fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     private List<Employee> employeeList;
+
 
     public int getId() {
         return id;
