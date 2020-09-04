@@ -18,30 +18,50 @@ public class JobCategoryController {
     @Autowired
     private JobCategoryService service;
 
+    /**
+     * POST /jobCategories/addJobCategory
+     *
+     * @return the ResponseEntity with status 200(OK) and with body the addedJobCategory
+     */
+
     @PostMapping("/addJobCategory")
     public ResponseEntity<Object> saveJobCategory(@RequestBody JobCategory jobCategory){
-        JobCategory jobCategoryAdded;
+        JobCategory addedJobCategory;
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "addJobCategory");
         try{
-            jobCategoryAdded = this.service.saveJobCategory(jobCategory);
+            addedJobCategory = this.service.saveJobCategory(jobCategory);
         }catch(ErrorResponse err) {
             ErrorResponse.LogError(err);
             return ResponseEntity.status(err.getErrorId()).headers(httpHeaders).body(err.getErrorMessage());
         }
-        return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).body(jobCategoryAdded);
+        return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).body(addedJobCategory);
     }
+
+    /**
+     * GET /jobCategories/getAllJobCategories get all the JobCategories
+     *
+     * @return the ResponseEntity with status 200(OK) and with body the jobCategoriesList
+     */
 
     @GetMapping("/getAllJobCategories")
     public ResponseEntity<Object> findAllCategories(){
-        List<JobCategory> allJobCategories;
+        List<JobCategory> jobCategoryList;
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "findAllJobCategories");
-        allJobCategories = this.service.findAllJobCategories();
-        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(allJobCategories);
+        jobCategoryList = this.service.findAllJobCategories();
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(jobCategoryList);
     }
+
+    /**
+     * DELETE /jobCategories/deleteJobCategory/:id delete the "id" JobCategory
+     *
+     * @param id the id of the JobCategory to delete
+     *
+     * @return the ResponseEntity with status 200(OK) and with body "JobCategory deleted!"
+     */
 
     @DeleteMapping("/deleteJobCategory/{id}")
     public ResponseEntity<Object> deleteJobCategory(@PathVariable int id){
