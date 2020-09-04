@@ -1,5 +1,6 @@
 package com.ausy_technologies.demo;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import com.ausy_technologies.demo.Model.DAO.Department;
@@ -8,9 +9,7 @@ import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.restdocs.RestDocumentationContext;
-import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.restdocs.operation.preprocess.OperationResponsePreprocessor;
+import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -35,49 +34,40 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs(outputDir = "target/generated-snippets")
 public class EmployeesManagementApplicationTests {
 
+    @Rule
+    public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation("target/generated-snippets");
+
     @Autowired
     private WebApplicationContext context;
-
-    private RestDocumentationContextProvider restDocumentationProvider;
 
     private MockMvc mockMvc;
 
     List<Department> departments = null;
 
     @Before
-    public void setUp(){//WebApplicationContext webApplicationContext,
-                       //RestDocumentationContextProvider restDocumentation){
-
-/*        this.mockMvc = MockMvcBuilders
-                .webAppContextSetup(webApplicationContext)
-                .apply(documentationConfiguration(restDocumentation))
-                .build();*/
-
+    public void setUp(){
         mockMvc = MockMvcBuilders.webAppContextSetup(context)
-                //.apply(documentationConfiguration(restDocumentationProvider))
+                .apply(documentationConfiguration(this.restDocumentation))
                 .build();
-
-        departments = Stream.of(new Department(7,"IT")
-                , new Department(3, "PR"))
-                .collect(Collectors.toList());
     }
 
     @Test
     public void addDepartmentTest() throws Exception {
-/*        Department department = new Department();
-        department.setName("IT");
-        department.setId(7);*/
-        String departmentsJson = new ObjectMapper().writeValueAsString(departments);
+/*        departments = Stream.of(new Department(7,"IT")
+                        , new Department(3, "PR"))
+                        .collect(Collectors.toList());*/
+
+        Department department = new Department();
+        department.setName("HR");
+        department.setId(8);
+
+        String departmentsJson = new ObjectMapper().writeValueAsString(department);
         mockMvc.perform(post("/departments/addDepartment")
                 .content(departmentsJson)
                 .contentType("application/json")).andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().json(departmentsJson))
-               // .andDo(document("{methodName}",
-               //         preprocessRequest(prettyPrint()),
-                //        (OperationResponsePreprocessor) preprocessRequest(prettyPrint())))
-        ;
+                .andDo(document("{methodName}",
+                        preprocessRequest(prettyPrint())));
     }
-
-
 }

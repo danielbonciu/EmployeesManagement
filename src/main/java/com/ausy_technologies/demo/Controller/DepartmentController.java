@@ -19,6 +19,12 @@ public class DepartmentController {
     @Autowired
     private DepartmentService service;
 
+    /**
+     * POST /departments/addDepartment
+     *
+     * @return the ResponseEntity with status 200(OK) and with body the addedEmployee
+     */
+
     @PostMapping("/addDepartment")
     public ResponseEntity<Object> saveDepartment(@RequestBody Department department){
         Department departmentAdded = null;
@@ -34,15 +40,29 @@ public class DepartmentController {
         return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).body(departmentAdded);
     }
 
+    /**
+     * GET /departments/getAllDepartments get all the departments
+     *
+     * @return the ResponseEntity with status 200(OK) and with body the departmentList
+     */
+
     @GetMapping("/getAllDepartments")
     public ResponseEntity<Object> findAllDepartments(){
-        List<Department> allDepartments;
+        List<Department> departmentList;
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "findAllDepartments");
-        allDepartments = this.service.findAllDepartments();
-        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(allDepartments);
+        departmentList = this.service.findAllDepartments();
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(departmentList);
     }
+
+    /**
+     * DELETE /departments/deleteDepartment/:id delete the "id" department
+     *
+     * @param id the id of the department to delete
+     *
+     * @return the ResponseEntity with status 200(OK) and with body "Department deleted!"
+     */
 
     @DeleteMapping("/deleteDepartment/{id}")
     public ResponseEntity<Object> deleteDepartment(@PathVariable int id){
